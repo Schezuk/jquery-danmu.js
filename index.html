@@ -1,0 +1,98 @@
+<html>
+	<head>
+		<title>弹幕墙</title>
+		<meta charset="utf-8">
+		<style type="text/css" data-for="result">
+			body{
+				width: 100%;
+				background-color: #f2f5e9;
+				overflow-x: hidden;
+			}
+			.danMu {
+				width: 900px;
+				height: 600px;
+				margin: 0 auto;
+				border: 1px solid #dbdfd6;
+				box-shadow: 0 0 5px rgba(0,0,0,.15);
+			}
+			.line{
+				height: 99px;
+				border-bottom: 1px solid #dbdfd6;
+				overflow: hidden;
+				position: relative;
+				z-index: 100;
+			}
+			.msg{
+				height: 98px;
+				line-height: 98px;
+				font-size: 50px;
+				display: inline-block;
+				white-space: nowrap;
+				position: absolute;
+				z-index: 99;
+				margin: 0 10px;
+				/* background-color: red; */
+			}
+			.msg img{
+				width: 78px;
+				height: 78px;
+				border-radius: 39px;
+				border: 1px solid #dbdfd6;
+				box-shadow: 0 0 5px rgba(0,0,0,.35);
+
+				vertical-align: middle;
+				margin-top: -13px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="danMu">
+			
+		</div>
+	</body>
+	<script src='bower_components/jquery/dist/jquery.min.js'></script>
+	<script src='dist/jquery-danmu.min.js'></script>
+	<script type="text/javascript">
+		$(function() {
+			/**
+			 * @param  {Function} getMsgHtml 
+			 *         [组装单条消息的回调方法，参数为单条数据对象]
+			 * @param  {Number} lineCount:5 
+			 *         [行数，和lineHeight二选一，都不配置会自动计算能放的最大行数，都配置lineHeight失效]
+			 * @param  {Number} lineHeight:200 
+			 *         [自定义每行所占的高度，用于计算行数，如果lineCount有配置就无效]
+			 * @param  {Number} minTime:5000 
+			 *         [滚动到头需要的最少时间（单位： 毫秒）]
+			 * @param  {Number} maxTime:15000 
+			 *         [滚动到头需要的最多时间（单位： 毫秒）]
+			 * @return {Object} [返回弹幕对象，包含两个方法分别是：init()、push(itemObj,fn) fn为开始播放回调]
+			 */
+			var dm = $('.danMu').danMu({
+				// lineCount: 5,
+				// lineHeight: 200,
+				minTime: 5000,
+				maxTime: 15000,
+				getMsgHtml: function(msgData){
+					var arr = [];
+					arr.push('<div class="msg"><img src="');
+					arr.push(msgData.img);
+					arr.push('">');
+					arr.push(msgData.text);
+					arr.push('</div>');
+					return arr.join('');
+				},
+			}).init();
+
+			setInterval(function(){
+				var i = Math.round(Math.random() * 9) + 1;
+				var item = {
+					img: './images/' + i + '.gif',
+					text: '哈哈' + i
+				};
+				dm.push(item,function(msgObj){
+				});
+			},700);
+		});
+	</script>
+
+</html>
