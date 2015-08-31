@@ -4,7 +4,7 @@
  */
 ;(function($){
 	'use strict';
-	
+
 	var dmWidth = 0,dmHeight = 0;
 
 	function DanMuMsg(setting){
@@ -15,7 +15,7 @@
 			lineNum: 1,// 行号
 			time: 5000,// 几秒中运动完成
 		}, setting || {});
-		
+
 		this.lineObj = this.conf.danMuJquery.find('div[data-i="' + this.conf.lineNum + '"]');
 		this.msgObj = null;
 		this.msgWidth = 0;// 用于存储消息的宽度
@@ -84,7 +84,7 @@
 
 	}
 	DanMuLine.prototype = {
-		checkLine: function(msgData){
+		checkLine: function(msgData,startFn,finishFn){
 			var _this = this;
 			// 不支持就直接返回null，如果支持了就直接放入行进行后续操作
 			var flag = true;
@@ -127,10 +127,14 @@
 					returnObj.msgObj.fadeOut(300,function(){
 						returnObj.msgObj.remove();
 						_this.magList.shift();
+						// 结束隐藏，回调
+						finishFn && finishFn(msgData);
 					});
-				},returnObj.time + 2000);
+				},returnObj.time + 1000);
 
 				_this.magList.push(dmm);
+
+				startFn && startFn(msgData);
 				return dmm;
 			}else{
 				dmm.msgObj.remove();
@@ -198,21 +202,20 @@
 			}
 			return _this;
 		},
-		push: function(msgObj,fn){
+		push: function(msgObj,startFn,finishFn){
 			if(!msgObj){
-				fn && fn(msgObj);
+				startFn && startFn(msgObj);
+				finishFn && finishFn(msgObj);
 				return;
 			}
 			var _this = this;
 			var pushObj = function(msgObj){
 				var random = parseInt(Math.random() * _this.lines.length);
-				var obj = _this.lines[random].checkLine(msgObj);
+				var obj = _this.lines[random].checkLine(msgObj,startFn,finishFn);
 				if(!obj){
 					setTimeout(function(){
 						pushObj(msgObj);
 					},500);
-				}else{
-					fn && fn(msgObj);
 				}
 			};
 			pushObj(msgObj);

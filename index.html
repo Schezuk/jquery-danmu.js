@@ -3,51 +3,69 @@
 		<title>弹幕墙</title>
 		<meta charset="utf-8">
 		<style type="text/css" data-for="result">
+			*{
+				margin:0;
+				padding:0;
+			}
 			body{
 				width: 100%;
 				background-color: #f2f5e9;
 				overflow-x: hidden;
+				background-image: url(./images/bg.jpg);
 			}
 			.danMu {
-				width: 900px;
-				height: 600px;
+				width: 100%;
+				height: 100%;
 				margin: 0 auto;
-				border: 1px solid #dbdfd6;
-				box-shadow: 0 0 5px rgba(0,0,0,.15);
+				/* border: 1px solid #dbdfd6;
+				box-shadow: 0 0 5px rgba(0,0,0,.15); */
 			}
 			.line{
 				height: 99px;
-				border-bottom: 1px solid #dbdfd6;
+				/* border-bottom: 1px solid #dbdfd6; */
 				overflow: hidden;
 				position: relative;
 				z-index: 100;
+				padding: 10px 10px 0 0;
 			}
 			.msg{
-				height: 98px;
-				line-height: 98px;
+				height: 78px;
+				line-height: 60px;
 				font-size: 50px;
 				display: inline-block;
 				white-space: nowrap;
 				position: absolute;
 				z-index: 99;
 				margin: 0 10px;
-				/* background-color: red; */
 			}
 			.msg img{
 				width: 78px;
 				height: 78px;
 				border-radius: 39px;
-				border: 1px solid #dbdfd6;
-				box-shadow: 0 0 5px rgba(0,0,0,.35);
+				border: 2px solid #dbdfd6;
+				box-shadow: 0 4px 10px rgba(0,0,0,.3);
 
 				vertical-align: middle;
 				margin-top: -13px;
+				z-index: 10;
+				position: relative;
+			}
+			.msg span{
+				height: 73%;
+				padding: 0 10px 0 60px;
+				margin: 20px 0 20px -50px;
+				display: inline-block;
+				background-color: #6ed972;
+				z-index: 9;
+				border-radius: 78px;
+				border: 1px solid #47776C;
+			    opacity: 0.7;
+			    box-shadow: 0 4px 1px #ccc;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="danMu">
-			
 		</div>
 	</body>
 	<script src='bower_components/jquery/dist/jquery.min.js'></script>
@@ -55,15 +73,15 @@
 	<script type="text/javascript">
 		$(function() {
 			/**
-			 * @param  {Function} getMsgHtml 
+			 * @param  {Function} getMsgHtml
 			 *         [组装单条消息的回调方法，参数为单条数据对象]
-			 * @param  {Number} lineCount:5 
+			 * @param  {Number} lineCount:5
 			 *         [行数，和lineHeight二选一，都不配置会自动计算能放的最大行数，都配置lineHeight失效]
-			 * @param  {Number} lineHeight:200 
+			 * @param  {Number} lineHeight:200
 			 *         [自定义每行所占的高度，用于计算行数，如果lineCount有配置就无效]
-			 * @param  {Number} minTime:5000 
+			 * @param  {Number} minTime:5000
 			 *         [滚动到头需要的最少时间（单位： 毫秒）]
-			 * @param  {Number} maxTime:15000 
+			 * @param  {Number} maxTime:15000
 			 *         [滚动到头需要的最多时间（单位： 毫秒）]
 			 * @return {Object} [返回弹幕对象，包含两个方法分别是：init()、push(itemObj,fn) fn为开始播放回调]
 			 */
@@ -76,22 +94,138 @@
 					var arr = [];
 					arr.push('<div class="msg"><img src="');
 					arr.push(msgData.img);
-					arr.push('">');
+					arr.push('"><span>');
 					arr.push(msgData.text);
-					arr.push('</div>');
+					arr.push('</span></div>');
 					return arr.join('');
 				},
 			}).init();
+			//return;
+			var msgArr = [
+				'我们这个世界，从不会给一个伤心的落伍者颁发奖牌。',
+				'有志者，事竟成。',
+				'懦弱的人只会裹足不前，莽撞的人只能引为烧身，只有真正勇敢的人才能所向披靡。',
+				'事常与人违，事总在人为。',
+				'驾驭命运的舵是奋斗。不抱有一丝幻想，不放弃一点机会，不停止一日努力。',
+				'Hell',
+				'Good mornin',
+				'I’m John Smit',
+				'Are you Bill Jone',
+				'Yes, I a',
+				'How are you',
+				'Fine, thanks.',
+				'How is Helen',
+				'She’s very well, thank you.',
+				'Good afternoon, Mr. Green.',
+				'Good evening, Mrs. Brown.',
+				'How are you this evening',
+				'Good night, John.',
+				'Good-bye, Bill.',
+				'See you tomorrow.',
+				'Come in, please.',
+				'Sit down.',
+				'Stand up, please.',
+				'Open your book, please',
+				'Close your book, please',
+				'Don’t open your book.',
+				'Do you understand',
+				'Yes, I understand.',
+				'No, I don’t understand',
+				'Listen and repeat.',
+				'Now read, please',
+				'That’s fine',
+				'It’s time to begin',
+				'Let’s begin now',
+				'This is Lesson On',
+				'What’s this',
+				'That’s a book',
+				'Is this your book',
+				'No, that’s not my book',
+				'Whose book is this',
+				'That’s your book',
+				'And what’s that',
+				'Is that a book',
+				'No, it isn’t',
+				'It’s a pencil',
+				'Is it yours',
+				'Yes, it’s mine',
+				'Where’s the door',
+				'There it is',
+				'Is this book his',
+				'What are these',
+				'Those are books',
+				'Where are the books',
+				'There they are',
+				'These are my pencil',
+				'Where are your pens',
+				'They’re over there',
+				'Are these your pens',
+				'Yes, they are',
+				'Those are mine',
+				'These are your books, aren’t they',
+				'No, they aren’t',
+				'They’re not mine',
+				'These are mine, and those are yours',
+				'Those aren’t your pens, are they',
+				'Who are you',
+				'I’m a student',
+				'Who is that over there',
+				'He’s a student, too',
+				'Is that lady a student',
+				'No, she isn’',
+				'Those men aren’t students, either',
+				'Am I your teacher',
+				'Yes, you are',
+				'That man is a teacher, isn’t he',
+				'Yes, he i',
+				'Who are those people',
+				'Maybe they’re farmers',
+				'Aren’t they students',
+				'I really don’t kno',
+				'What’s your name',
+				'My name is Jones',
+				'What’s your first name',
+				'How do you spell your last nam',
+				'Jones. J-O-N-E-S',
+				'What’s your friend’s name',
+				'His name is John Smith',
+				'John and I are old friends',
+				'你是约翰的兄弟',
+				'不，我不',
+				'这是琼斯先',
+				'你',
+				'琼斯夫人，这是约翰、史密斯先',
+				'见到您很高',
+				'今天是星期',
+				'今天是星期',
+				'昨天是星期',
+				'昨天是星期',
+				'明天是星期',
+				'现在是几月',
+				'现在是一月',
+				'上个月是十二月，对不',
+				'是，是十二月',
+				'下个月是几月份？',
+			];
+			var msgL = msgArr.length;
 
 			setInterval(function(){
-				var i = Math.round(Math.random() * 9) + 1;
+				var msgI = Math.round(Math.random() * (msgL - 1)) + 1;
+				var i = Math.round(Math.random() * 23) + 1;
+				var suffix = '.jpg';
+				if(i >= 15){
+					suffix = '.gif';
+				}
 				var item = {
-					img: './images/' + i + '.gif',
-					text: '哈哈' + i
+					img: './images/' + i + suffix,
+					text: msgArr[msgI],
 				};
-				dm.push(item,function(msgObj){
+				dm.push(item,function(obj){
+					//console.log('开始播放:',obj);
+				},function(obj){
+					//console.log('播放结束:',obj);
 				});
-			},700);
+			},2000);
 		});
 	</script>
 
