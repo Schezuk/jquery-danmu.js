@@ -34,7 +34,7 @@
 > 	
 >  - **返回值**  (类型：Object) 	 返回弹幕对象，包含两个方法分别是：
 > 	  - init()    初始化弹幕墙
-> 	  - push(itemObj,fn)  fn为开始播放回调
+> 	  - push(itemObj,startFn,finishFn)  startFn 为开始播放回调,finishFn 为结束播放后的回调
 
 ###**2.消息新增**
 
@@ -44,16 +44,20 @@
     		img: './images/' + i + '.gif',
     		text: '哈哈' + i
     	};
-    	dm.push(item,function(msgObj){
-    	});
+    	dm.push(item,function(obj){
+		//console.log('开始播放:',obj);
+	},function(obj){
+		//console.log('播放结束:',obj);
+	});
     },700);
 
 新增消息说明
 
-> **dm.push(item, function(msgObj){})**
+> **dm.push(item, function(obj){},function(obj){})**
 > 
 >  - 第一个参数为每条消息的自定义对象，该对象默认插件会读取text作为消息内容进行显示，如果弹幕对象的**getMsgHtml**方法被抽重写那么就会作为调用该方法的一个参数传递进去进行消息html拼装。
 >  
->  - 第二个参数为该条消息开始播放时的通知回掉，可选填，参数为消息对象。
+>  - 第二个参数为该条消息开始播放开始时的通知回掉，可选填（如果第三个参数要传此项就为必填项），参数为消息对象。
+>  - 第三个参数为该条消息开始播放结束时的通知回掉，可选填，参数为消息对象。
 
 
